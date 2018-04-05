@@ -18,15 +18,19 @@ public class Calculator extends JFrame {
 
     private Calculator() {
         super();
-        init();
+        WindowInit();
+        textPanelInit();
+        buttonsInit();
     }
 
-    private void init() {
+    private void WindowInit() {
         setTitle("计算器");
         setResizable(false);
         setBounds(100, 100, 240, 240);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
 
+    private void textPanelInit(){
         final JPanel textPanel = new JPanel();
         textField.setText("0");
         textField.setColumns(18);
@@ -34,7 +38,9 @@ public class Calculator extends JFrame {
         textField.setHorizontalAlignment(SwingConstants.RIGHT);
         textPanel.add(textField);
         getContentPane().add(textPanel, BorderLayout.NORTH);
+    }
 
+    private void buttonsInit(){
         final JPanel inputButtonPanel = new JPanel();
         final GridLayout buttonLayout = new GridLayout(0, 4);
         buttonLayout.setVgap(10);

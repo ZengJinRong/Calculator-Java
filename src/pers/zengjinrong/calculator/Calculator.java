@@ -47,16 +47,16 @@ public class Calculator extends JFrame {
         buttonLayout.setHgap(10);
         inputButtonPanel.setLayout(buttonLayout);
         getContentPane().add(inputButtonPanel, BorderLayout.SOUTH);
-        JButton[][] inputButton = {
+        JButton[][] inputButtons = {
                 {new BackspaceButton(), new ClearButton(), new ClearAllButton(), new OperatorButton("√")},
                 {new NumberButton(1), new NumberButton(2), new NumberButton(3), new OperatorButton("+")},
                 {new NumberButton(4), new NumberButton(5), new NumberButton(6), new OperatorButton("-")},
                 {new NumberButton(7), new NumberButton(8), new NumberButton(9), new OperatorButton("*")},
                 {new PointButton(), new NumberButton(0), new OperatorButton("="), new OperatorButton("/")},
         };
-        for (int row = 0; row < inputButton.length; row++) {
-            for (int col = 0; col < inputButton[0].length; col++) {
-                final JButton button = inputButton[row][col];
+
+        for (JButton[] buttons :inputButtons) {
+            for(final JButton button:buttons){
                 inputButtonPanel.add(button);
             }
         }

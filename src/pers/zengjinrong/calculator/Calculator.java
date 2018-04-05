@@ -144,7 +144,7 @@ public class Calculator extends JFrame {
         @Override
         void action() {
             String text = textField.getText();
-            if (text.indexOf(".") < 0) {
+            if (!text.contains(".")) {
                 text = text + ".";
                 textField.setText(text);
             }

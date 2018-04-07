@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
  * 基于Java的简易计算器实现
  *
  * @author ZengJInRong
- * @version 1.3.1
+ * @version 1.4
  */
 public class Calculator extends JFrame {
     private String number = "0";                    //记录被运算数，二元运算中的第一个数

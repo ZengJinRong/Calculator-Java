@@ -5,17 +5,29 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * 基于Java的简易计算器实现
+ *
+ * @author ZengJInRong
+ * @version 1.3.1
+ */
 public class Calculator extends JFrame {
-    private String number = "0";
-    private boolean willTextInit = true;
-    private String operator = "+";
-    private final JTextField textField = new JTextField();
+    private String number = "0";                    //记录被运算数，二元运算中的第一个数
+    private boolean textInitFlag = true;            //文本框显示初始化标记，为true时可重新输入数字
+    private String operator = "+";                  //记录最后一次输入的运算符号
+    private final JTextField textField = new JTextField();      //文本框，显示运算结果或当前输入数字
 
+    /**
+     * 主函数入口
+     */
     public static void main(String[] args) {
         Calculator calculator = new Calculator();
         calculator.setVisible(true);
     }
 
+    /**
+     * 计算器类构造函数
+     */
     private Calculator() {
         super();
         WindowInit();
@@ -23,6 +35,9 @@ public class Calculator extends JFrame {
         buttonsInit();
     }
 
+    /**
+     * 初始化窗口界面
+     */
     private void WindowInit() {
         setTitle("计算器");
         setResizable(false);
@@ -30,7 +45,10 @@ public class Calculator extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    private void textPanelInit(){
+    /**
+     * 初始化文本框
+     */
+    private void textPanelInit() {
         final JPanel textPanel = new JPanel();
         textField.setText("0");
         textField.setColumns(18);
@@ -40,7 +58,10 @@ public class Calculator extends JFrame {
         getContentPane().add(textPanel, BorderLayout.NORTH);
     }
 
-    private void buttonsInit(){
+    /**
+     * 初始化按键
+     */
+    private void buttonsInit() {
         final JPanel inputButtonPanel = new JPanel();
         final GridLayout buttonLayout = new GridLayout(0, 4);
         buttonLayout.setVgap(10);
@@ -55,14 +76,17 @@ public class Calculator extends JFrame {
                 {new PointButton(), new NumberButton(0), new OperatorButton("="), new OperatorButton("/")},
         };
 
-        for (JButton[] buttons :inputButtons) {
-            for(final JButton button:buttons){
+        //foreach循环遍历inputButtons
+        for (JButton[] buttons : inputButtons) {
+            for (final JButton button : buttons) {
                 inputButtonPanel.add(button);
             }
         }
     }
 
-
+    /**
+     * 所有计算器按键的抽象父类
+     */
     abstract class CalculatorButton extends JButton {
         CalculatorButton(String name) {
             this.setText(name);
@@ -74,10 +98,13 @@ public class Calculator extends JFrame {
             });
         }
 
+        //按键点击操作
         abstract void action();
     }
 
-
+    /**
+     * 运算符号键
+     */
     class OperatorButton extends CalculatorButton {
 
         OperatorButton(String name) {
@@ -89,8 +116,10 @@ public class Calculator extends JFrame {
             double num = Double.valueOf(number);
             double textNum = Double.valueOf(textField.getText());
             if (num == 0) {
-                number = textNum + "";
+                //未记录有被运算数，则当前输入数字记录为被运算数
+                num = textNum;
             } else {
+                //已记录有被运算数，进行二元运算操作
                 switch (operator.charAt(0)) {
                     case '+':
                         num = num + textNum;
@@ -108,22 +137,26 @@ public class Calculator extends JFrame {
                         num = textNum;
                         break;
                 }
-
-                operator = this.getText();
-                switch (operator.charAt(0)) {
-                    case '√':
-                        num = Math.sqrt(num);
-                        break;
-                }
-                number = num + "";
             }
+            operator = this.getText();
+
+            //一元运算操作
+            switch (operator.charAt(0)) {
+                case '√':
+                    num = Math.sqrt(num);
+                    break;
+            }
+            number = num + "";
+
             textField.setText(number);
-            willTextInit = true;
+            textInitFlag = true;
 
         }
     }
 
-
+    /**
+     * 数字键
+     */
     class NumberButton extends CalculatorButton {
         NumberButton(Integer num) {
             super(num.toString().substring(0, 1));
@@ -132,16 +165,21 @@ public class Calculator extends JFrame {
         @Override
         void action() {
             String text = textField.getText();
-            if (willTextInit) {
+            if (textInitFlag) {
+                //当前输入覆盖原先显示的内容
                 text = this.getText();
-                willTextInit = false;
+                textInitFlag = false;
             } else {
+                //当前输入接在原先显示内容的末尾
                 text = text + this.getText();
             }
             textField.setText(text);
         }
     }
 
+    /**
+     * 小数点键
+     */
     class PointButton extends CalculatorButton {
         PointButton() {
             super(".");
@@ -150,6 +188,7 @@ public class Calculator extends JFrame {
         @Override
         void action() {
             String text = textField.getText();
+            //判断是否是第一个输入的小数点
             if (!text.contains(".")) {
                 text = text + ".";
                 textField.setText(text);
@@ -157,6 +196,9 @@ public class Calculator extends JFrame {
         }
     }
 
+    /**
+     * 退格键
+     */
     class BackspaceButton extends CalculatorButton {
         BackspaceButton() {
             super("←");
@@ -167,15 +209,20 @@ public class Calculator extends JFrame {
             String text = textField.getText();
             int length = text.length();
             if (length == 1) {
+                //退格到底归零
                 textField.setText("0");
-                willTextInit = true;
+                textInitFlag = true;
             } else {
+                //退格操作
                 text = text.substring(0, length - 1);
                 textField.setText(text);
             }
         }
     }
 
+    /**
+     * 清除当前输入键
+     */
     class ClearButton extends CalculatorButton {
         ClearButton() {
             super("CE");
@@ -184,10 +231,13 @@ public class Calculator extends JFrame {
         @Override
         void action() {
             textField.setText("0");
-            willTextInit = true;
+            textInitFlag = true;
         }
     }
 
+    /**
+     * 清除所有记录键
+     */
     class ClearAllButton extends CalculatorButton {
         ClearAllButton() {
             super("C");
@@ -197,7 +247,7 @@ public class Calculator extends JFrame {
         void action() {
             textField.setText("0");
             number = "0";
-            willTextInit = true;
+            textInitFlag = true;
         }
     }
 

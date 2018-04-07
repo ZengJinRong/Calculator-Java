@@ -9,12 +9,14 @@ import java.awt.event.ActionListener;
  * 基于Java的简易计算器实现
  *
  * @author ZengJInRong
- * @version 1.4
+ * @version 1.4.1
  */
 public class Calculator extends JFrame {
-    private String number = "0";                    //记录被运算数，二元运算中的第一个数
-    private boolean textInitFlag = true;            //文本框显示初始化标记，为true时可重新输入数字
-    private String operator = "+";                  //记录最后一次输入的运算符号
+    private final String TITLE ="计算器";
+
+    private String number = "0";                                //记录被运算数，二元运算中的第一个数
+    private boolean textInitFlag = true;                        //文本框显示初始化标记，为true时可重新输入数字
+    private String operator = "+";                              //记录最后一次输入的运算符号
     private final JTextField textField = new JTextField();      //文本框，显示运算结果或当前输入数字
 
     /**
@@ -39,7 +41,7 @@ public class Calculator extends JFrame {
      * 初始化窗口界面
      */
     private void WindowInit() {
-        setTitle("计算器");
+        setTitle(TITLE);
         setResizable(false);
         setBounds(100, 100, 240, 240);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
